@@ -1,5 +1,10 @@
+// @@@SNIPSTART audiobook-project-java-Workflow-implementation
 package ttspackage;
 
+import io.temporal.activity.ActivityOptions;
+import io.temporal.common.RetryOptions;
+import io.temporal.client.WorkflowStub;
+import io.temporal.workflow.Workflow;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.logging.Logger;
@@ -8,13 +13,25 @@ public class TTSWorkflowImpl implements TTSWorkflow {
     private ConversionStatus status;
     private static final Logger logger = Logger.getLogger(TTSWorkflowImpl.class.getName());
 
-    // Allow up to two minutes for each chunk to process.
-    private TTSActivities encodingStub = TemporalUtility.buildActivityStub(TTSActivities.class, 0, Duration.ofSeconds(120));
+    private RetryOptions singleRetryOptions = RetryOptions
+        .newBuilder()
+        .setMaximumAttempts(1)
+        .build();
 
-    // Local utility work requires very little time so it uses a shorter timeout
-    private FileActivities fileStub = TemporalUtility.buildActivityStub(FileActivities.class, 0, Duration.ofSeconds(10));
+    private ActivityOptions singleRetryActivityOptions = ActivityOptions
+        .newBuilder()
+        .setRetryOptions(singleRetryOptions)
+        .build();
 
-    // Query method to return the current status message
+    private ActivityOptions twoMinuteActivityOptions = ActivityOptions
+        .newBuilder()
+        .setScheduleToCloseTimeout(Duration.ofSeconds(120))
+        .build();
+
+    private FileActivities fileStub = Workflow.newActivityStub(FileActivities.class, singleRetryActivityOptions);
+    private TTSActivities encodingStub = Workflow.newActivityStub(TTSActivities.class, twoMinuteActivityOptions);
+
+    // Fetch the current encoding status
     public String fetchMessage() {
         return status.message;
     }
@@ -38,3 +55,4 @@ public class TTSWorkflowImpl implements TTSWorkflow {
         return status.outputPath.toString();
     }
 }
+// @@@SNIPEND

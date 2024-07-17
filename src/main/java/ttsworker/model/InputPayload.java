@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-InputPayload-data-type
 package ttspackage;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -12,3 +13,4 @@ public class InputPayload {
         this.path = path;
     }
 }
+// @@@SNIPEND

@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-Conversion-Status-data-type
 package ttspackage;
 
 import java.nio.file.Path;
@@ -29,3 +30,4 @@ public class ConversionStatus {
     }
 
 }
+// @@@SNIPEND

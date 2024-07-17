@@ -147,12 +147,14 @@ src
             │   └── InputPayload.java
             ├── temporal
             │   ├── FileActivities.java
+            │   ├── FileActivitiesImpl.java
             │   ├── TTSActivities.java
+            │   ├── TTSActivitiesImpl.java
             │   ├── TTSWorkerApp.java
-            │   └── TTSWorkflow.java
+            │   ├── TTSWorkflow.java
+            │   └── TTSWorkflowImpl.java
             └── utility
                 ├── DataUtility.java
                 ├── FileUtility.java
-                ├── TTSUtility.java
-                └── TemporalUtility.java
+                └── TTSUtility.java
 ```

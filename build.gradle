@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-Gradle-build-file
 group 'ttspackage'; version '0.0.1'
 repositories { mavenCentral() }
 apply plugin: 'java'
@@ -17,3 +18,4 @@ task run(type: JavaExec) {
     mainClass = 'ttspackage.TTSWorkerApp'
     standardOutput = System.out
 }
+// @@@SNIPEND

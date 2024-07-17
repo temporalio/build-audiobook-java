@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-data-utility-class
 package ttspackage;
 
 import java.io.File;
@@ -79,4 +80,4 @@ public class DataUtility {
         Files.write(filePath, data, java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND);
     }
 }
-
+// @@@SNIPEND

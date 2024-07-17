@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-Worker-app
 package ttspackage;
 
 import io.temporal.client.WorkflowClient;
@@ -34,3 +35,4 @@ public class TTSWorkerApp {
         runWorker(args);
     }
 }
+// @@@SNIPEND

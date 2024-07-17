@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-tts-implementation
 package ttspackage;
 
 import io.temporal.failure.ApplicationFailure;
@@ -25,3 +26,4 @@ public class TTSActivitiesImpl implements TTSActivities {
         }
     }
 }
+// @@@SNIPEND

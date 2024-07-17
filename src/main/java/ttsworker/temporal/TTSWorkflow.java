@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-Workflow-interface
 package ttspackage;
 
 import io.temporal.workflow.QueryMethod;
@@ -12,3 +13,4 @@ public interface TTSWorkflow {
     @QueryMethod
     String fetchMessage();
 }
+// @@@SNIPEND

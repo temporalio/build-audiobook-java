@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-FileActivities-implementation
 package ttspackage;
 
 import io.temporal.failure.ApplicationFailure;
@@ -72,3 +73,4 @@ public class FileActivitiesImpl implements FileActivities {
         return status;
     }
 }
+// @@@SNIPEND

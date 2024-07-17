@@ -1,3 +1,4 @@
+// @@@SNIPSTART audiobook-project-java-file-utility-class
 package ttspackage;
 
 import java.io.IOException;
@@ -171,3 +172,4 @@ public class FileUtility {
     }
 
 }
+// @@@SNIPEND
