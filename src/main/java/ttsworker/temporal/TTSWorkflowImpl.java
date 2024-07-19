@@ -15,12 +15,13 @@ public class TTSWorkflowImpl implements TTSWorkflow {
 
     private RetryOptions singleRetryOptions = RetryOptions
         .newBuilder()
-        .setMaximumAttempts(1)
+        .setMaximumAttempts(3)
         .build();
 
     private ActivityOptions singleRetryActivityOptions = ActivityOptions
         .newBuilder()
         .setRetryOptions(singleRetryOptions)
+        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
         .build();
 
     private ActivityOptions twoMinuteActivityOptions = ActivityOptions
@@ -31,25 +32,18 @@ public class TTSWorkflowImpl implements TTSWorkflow {
     private FileActivities fileStub = Workflow.newActivityStub(FileActivities.class, singleRetryActivityOptions);
     private TTSActivities encodingStub = Workflow.newActivityStub(TTSActivities.class, twoMinuteActivityOptions);
 
-    // Fetch the current encoding status
     public String fetchMessage() {
         return status.message;
     }
 
-    // Workflow entry point
     public String startWorkflow(InputPayload payload) {
-        // Create the conversion elements
         ConversionStatus status = fileStub.setupStatus(payload.path);
-
-        // Process them
         for (int index = 0; index < status.chunkCount; index += 1) {
             status.count = index;
-            status.message = "Processing part " + (index + 1) + " of " + status.chunkCount; // for Queries
+            status.message = "Processing part " + (index + 1) + " of " + status.chunkCount; 
             logger.info(status.message);
             encodingStub.process(status.chunks.get(index), status.tempOutputPath);
         }
-
-        // Move the results into place from the temporary folder
         status = fileStub.moveAudio(status);
         logger.info("Output file: " + status.outputPath.toString());
         return status.outputPath.toString();

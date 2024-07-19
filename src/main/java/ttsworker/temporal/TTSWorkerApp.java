@@ -23,12 +23,9 @@ public class TTSWorkerApp {
     }
 
     public static void main(String[] args) {
-        // Validate that there's a bearer token before moving forward
         String bearerToken = System.getenv("OPEN_AI_BEARER_TOKEN");
         if (bearerToken == null || bearerToken.isEmpty()) {
-            logger.severe("Bearer Token is not set as an Environment Variable.");
-            logger.severe("Set OPEN_AI_BEARER_TOKEN in the Worker's shell before running.");
-            logger.severe("Worker cannot run. Exiting.");
+            logger.severe("Environment variable OPEN_AI_BEARER_TOKEN not found");
             System.exit(1);
         }
 

@@ -113,16 +113,16 @@ temporal workflow query \
 It makes sense to submit each chapter as a separate Workflow.
 To combine your mp3 files, just concatenate them with [`ffmpeg`](https://ffmpeg.org/download.html).
 
-1. Create a text file (chapters-list.txt for example):
+1. Create a text file listing the files. For example:
 
-```
+```text
 file 'chapter1.mp3'
 file 'chapter2.mp3'
 file 'chapter3.mp3'
 ...
 ``` 
 
-2. Use `ffmpeg`:
+2. Use `ffmpeg` to concatenate the audio:
 
 ```
 ffmpeg -f concat -safe 0 -i chapters-list.txt -c copy fullbook.mp3
