@@ -38,7 +38,6 @@ public class TTSUtility {
         json.put("input", text);
         json.put("voice", "nova"); // see https://platform.openai.com/docs/guides/text-to-speech/voice-options
         json.put("response_format", "mp3");
-        json.put("speed", 1);
 
         RequestBody body = RequestBody.create(
                 json.toString(), MediaType.get("application/json; charset=utf-8"));

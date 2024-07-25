@@ -21,14 +21,6 @@ public class FileActivitiesImpl implements FileActivities {
         );
         logger.info("Validated input file path: " + pathString);
 
-        status.tempOutputPath = FileUtility.createTemporaryFile().orElseThrow(() ->
-             ApplicationFailure.newFailure(
-                "Unable to create temporary work file to process data",
-                "FILE_ERROR"
-            )
-        );
-        logger.info("Created temporary file for processing: " + status.tempOutputPath.toString());
-
         String content = FileUtility.fetchFileContent(status.inputPath).orElseThrow(() ->
              ApplicationFailure.newFailure(
                 "Missing/unreadable contents",
@@ -41,6 +33,14 @@ public class FileActivitiesImpl implements FileActivities {
         status.count = 0;
         status.message = "Starting processing";
         logger.info("File content has " + status.chunkCount + " chunk(s) to process.");
+
+        status.tempOutputPath = FileUtility.createTemporaryFile().orElseThrow(() ->
+             ApplicationFailure.newFailure(
+                "Unable to create temporary work file to process data",
+                "FILE_ERROR"
+            )
+        );
+        logger.info("Created temporary file for processing: " + status.tempOutputPath.toString());
 
         return status;
     }

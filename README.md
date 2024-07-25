@@ -108,6 +108,34 @@ temporal workflow query \
     --workflow-id YourWorkflowId
 ```
 
+### Validate your audio output
+
+The open source [checkmate](https://github.com/Sjord/checkmate) app lets you validate your generated MP3 file for errors.
+
+```
+$ mpck -v audio.mp3
+
+SUMMARY: audio.mp3
+    version                       MPEG v2.0
+    layer                         3
+    bitrate                       160000 bps
+    samplerate                    24000 Hz
+    frames                        23723
+    time                          9:29.352
+    unidentified                  0 b (0%)
+    stereo                        yes
+    size                          11120 KiB
+    ID3V1                         no
+    ID3V2                         no
+    APEV1                         no
+    APEV2                         no
+    last frame                    
+        offset                    11386560 b (0xadbec0)
+        length                    480
+    errors                        none
+    result                        Ok
+```
+
 ### Converting chapter files into a book
 
 It makes sense to submit each chapter as a separate Workflow.
