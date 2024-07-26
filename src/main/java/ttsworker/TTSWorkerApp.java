@@ -15,9 +15,8 @@ public class TTSWorkerApp {
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(service);
         WorkerFactory factory = WorkerFactory.newInstance(client);
-        Worker worker = factory.newWorker(TTSWorkerApp.sharedTaskQueue);
+        Worker worker = factory.newWorker(sharedTaskQueue);
         worker.registerWorkflowImplementationTypes(TTSWorkflowImpl.class);
-        worker.registerActivitiesImplementations(new FileActivitiesImpl());
         worker.registerActivitiesImplementations(new TTSActivitiesImpl());
         factory.start();
     }
@@ -28,6 +27,9 @@ public class TTSWorkerApp {
             logger.severe("Environment variable OPEN_AI_BEARER_TOKEN not found");
             System.exit(1);
         }
+        bearerToken = bearerToken.trim();
+        bearerToken = bearerToken.replaceAll("[\\P{Print}]", "");
+        TTSActivitiesImpl.bearerToken = bearerToken;
 
         runWorker(args);
     }

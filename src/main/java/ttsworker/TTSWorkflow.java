@@ -8,9 +8,9 @@ import io.temporal.workflow.WorkflowMethod;
 @WorkflowInterface
 public interface TTSWorkflow {
     @WorkflowMethod
-    String startWorkflow(InputPayload payload);
+    public String startWorkflow(String filePathString);
 
     @QueryMethod
-    String fetchMessage();
+    public String fetchMessage();
 }
 // @@@SNIPEND

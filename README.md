@@ -1,106 +1,112 @@
 # Build Your Own Audiobooks
 
-This project creates a Temporal Worker that converts text into MP3 audiobooks using OpenAI's text-to-speech API (https://platform.openai.com/docs/api-reference/audio/createSpeech).
-Temporal Workflows reliably transform your text file into high-quality audio.
-Follow along with this project by reading the tutorial at [Temporal's learn site](https://learn.temporal.io/tutorials).
+OpenAI offers so many opportunities to use the power of large models to create amazing results.
+This project uses [OpenAI's text-to-speech (TTS) API](https://platform.openai.com/docs/guides/text-to-speech) to convert text into audiobooks.
 
-<!--
- LATER: [Temporal's learn site](https://learn.temporal.io/tutorials/java/audiobook/).
--->
+Adding Temporal to this process ensures a smooth and robust audiobook creation experience.
+Temporal's open-source solutions add hassle-free fault mitigation to your projects.
+By integrating Temporal with OpenAI, you can take full advantage of OpenAI's many TTS features without worrying about errors.
 
-Temporal provides an open-source solution that adds hassle-free fault mitigation to your projects.
-You focus on your business logic instead of dealing with connection errors and other transitory issues.
-Adding Temporal to OpenAI offers a smooth, efficient, and robust audiobook creation process.
-OpenAI offers a fantastic text-to-speech experience. 
-It includes a [variety of pre-built voices](https://platform.openai.com/docs/guides/text-to-speech/voice-options) and extensive languages support, so you can choose the perfect tone and rhythm for your audio files.
-Together, these two technologies help you focus on creating great content, allowing the text-to-speech Temporal Worker to handle any issues that might arise during processing.
+OpenAI provides [top-quality voices](https://platform.openai.com/docs/guides/text-to-speech/voice-options) and extensive [language support](https://platform.openai.com/docs/guides/text-to-speech/supported-output-formats), allowing you to choose the perfect tone and rhythm for your audio files.
+Together, these two technologies help you focus on creating great content.
 
-## Pre-requisites
+**_This project is part of a tutorial._** Follow along by reading the [Build Your Own Audiobooks guide](https://learn.temporal.io/tutorials/java/audiobook/) at [Temporal's learn site](https://learn.temporal.io/tutorials).
 
-Before starting this project:
+## Prerequisites
 
-- You need an active OpenAI API developer account and your bearer token.
-- Be familiar with the Java programming language and the Gradle build tool.
-- Make sure the Temporal CLI tool/development Server must be installed on your system.
-  See [Getting Started with Java and Temporal](https://learn.temporal.io/getting_started/java/dev_environment/) to install up your tooling.
+Before starting this project, make sure you have the following:
 
-## Set up
+- An active OpenAI API developer account and your bearer token.
+- Familiarity with the Java programming language and the Gradle build tool.
+- The Temporal CLI tool and development server installed on your system.
+  Refer to [Getting Started with Java and Temporal](https://learn.temporal.io/getting_started/java/dev_environment/) for detailed setup instructions.
+
+## Setup
 
 Follow these steps to begin converting text to audio.
 
-### Run the development server
+### Run the Development Server
 
-Make sure the Temporal development server is running and is using a peristent store.
-This makes sure that interrupted work can be picked up and continued without repeating steps, even if you experience server interruptions:
+Make sure the Temporal development server is running and using a persistent store.
+Interrupted work can be picked up and continued without repeating steps, even if you experience server interruptions:
 
-```
+```sh
 temporal server start-dev \
     --db-filename /path/to/your/temporal.db
 ```
 
-Connect to the [Temporal Web UI](http://localhost:8233) at [http://localhost:8233](http://localhost:8233) to check that the server is working.  
+Once running, connect to the [Temporal Web UI](http://localhost:8233/) and verify that the server is working.
 
-### Instantiate your Bearer Token
+
+### Instantiate Your Bearer Token
 
 Create an environment variable called OPEN_AI_BEARER_TOKEN to configure your OpenAI credentials.
 If you set this value using a shell script, make sure to `source` the script so the variable carries over past the script execution.
-The environment variable must set in the same shell where you'll run your worker. 
+The environment variable must be set in the same shell where you'll run your application.
 
-### Run the Worker
+### Run the application (Worker)
 
-Build the worker with `gradle build` and then issue `gradle run` to start it running.
-With the Worker running, you can submit jobs to the text-to-speech worker.
+1. Build the Worker app:
 
-Please note, if the Worker can't fetch a bearer token it will fail at launch.
-This prevents you running jobs and finding out you forgot to set the bearer token until you're well into the Workflow process.
+   ```sh
+   gradle build
+   ```
+
+2. Start the app running:
+
+   ```sh
+   gradle run
+   ```
+
+If the Worker can't fetch a bearer token from the shell environment, it will loudly fail at launch.
+This early check prevents you from running jobs and waiting to find out that you forgot to set the bearer token until you're well into the Workflow process.
+
+Now that the Worker is running, you can submit jobs for text-to-speech processing.
 
 ## Submit narration jobs
 
-Use the Temporal CLI tool to build audio from text files. 
-Use `execute` to watch the execution in real time from the command line:
+Use the Temporal CLI tool to build audio from text files.
+
+Use the `execute` subcommand to watch the execution in real time from the command line:
 
 ```
 temporal workflow execute \
     --type TTSWorkflow \
     --task-queue tts-task-queue \
-    --input '{"path": "/path/to/your/text-file.txt"}' \
+    --input '"/path/to/your/text-file.txt"' \
     --workflow-id "tristam-shandy-tts"
 ```
 
-* **type**: The name of this text-to-speech Workflow is **`TTSWorkflow`**.
-* **task-queue**: This Worker polls the "**TTS_TASK_QUEUE**" Task Queue.
-* **input**: Pass a JSON string with the following keys and values:
-    * **path**: a /path/to/your/input/text-file.
+* **type**: The name of this text-to-speech Workflow is `TTSWorkflow`.
+* **task-queue**: This Worker polls the "TTS_TASK_QUEUE" Task Queue.
+* **input**: Pass a quoted JSON string with a /path/to/your/input/text-file.
 * **workflow-id**: Set a descriptive name for your Workflow Id.
-  This makes it easier to track your Workflow Execution in the Web UI.  
+  This makes it easier to track your Workflow Execution in the Web UI.
+ 
   The identifier you set doesn't affect the input text file or the output audio file names.
 
-### Locate the generated file
+### The output file
 
-The generated MP3 audio is placed in the same folder as your input text file.
+Your output is collected in a system-provided temporary file.
+
+After, your generated MP3 audio is moved into the same folder as your input text file.
 It uses the same name replacing the `txt` extension with `mp3`.
-If an output file already exists, it prevents name collisions with versioning.
+If an output file already exists, the project versions it to prevent name collisions.
 
 The `TTSWorkflow` returns a string, the /path/to/your/output/audio-file.
 Check the Web UI Input and Results section after the Workflow completes.
-The results path is also listed as part of the CLI's `workflow execute` command and in the Worker output. 
+The results path is also displayed as part of the CLI's `workflow execute` command output and in the Worker logs.
 
 ### Cautions and notes
 
-- For obvious reasons, don't mess with your input or output files while the workflow is running.
+- Do not modify your input or output files while the Workflow is running.
   Temporal is not a cure for bad judgement.
 - The Workflow fails if you don't pass a valid text file named with a `txt` extension.
-- The Workflow may fail if you don't use an absolute path to your text file
-  Use `readlink` to convert a relative path to an absolute path:
 
-  ```
-  readlink -f <relative_path>
-  ```
-  
 ### Peeking at the process
 
-There's a little Query message to check progress during long processes.
-Submit in a separate terminal window or tab:
+This project includes a Query to check progress during long processes.
+Run it in a separate terminal window or tab:
 
 ```
 temporal workflow query \
@@ -138,25 +144,30 @@ SUMMARY: audio.mp3
 
 ### Converting chapter files into a book
 
-It makes sense to submit each chapter as a separate Workflow.
-To combine your mp3 files, just concatenate them with [`ffmpeg`](https://ffmpeg.org/download.html).
+Consider submitting each chapter as a separate Workflow.
+This allows you to quality check each file and ensure it "reads" the way you want.
+After generating all your chapters and front material, back material, and other book elements, you can combine them together.
 
-1. Create a text file listing the files. For example:
+Use [`ffmpeg`](https://ffmpeg.org) to combine audio files.
+
+1. Create a text file listing the files, for example:
 
 ```text
+file 'title_sequence.mp3'
+file 'introduction.mp3'
 file 'chapter1.mp3'
 file 'chapter2.mp3'
 file 'chapter3.mp3'
 ...
 ``` 
 
-2. Use `ffmpeg` to concatenate the audio:
+2. Perform the concatenation:
 
 ```
 ffmpeg -f concat -safe 0 -i chapters-list.txt -c copy fullbook.mp3
 ```
 
-`ffmpeg` also allows you to convert your audio to other formats.
+3. (optional) `ffmpeg` allows you to convert your audio to other formats.
 For example:
 
 ```
@@ -165,24 +176,18 @@ ffmpeg -i fullbook.mp3 fullbook.m4a
 
 ## Project Structure
 
-```
-src
-└── main
-    └── java
-        └── ttsworker
-            ├── model
-            │   ├── ConversionStatus.java
-            │   └── InputPayload.java
-            ├── temporal
-            │   ├── FileActivities.java
-            │   ├── FileActivitiesImpl.java
-            │   ├── TTSActivities.java
-            │   ├── TTSActivitiesImpl.java
-            │   ├── TTSWorkerApp.java
-            │   ├── TTSWorkflow.java
-            │   └── TTSWorkflowImpl.java
-            └── utility
-                ├── DataUtility.java
-                ├── FileUtility.java
-                └── TTSUtility.java
+```sh
+TTSWorker
+├── LICENSE
+├── README.md
+├── build.gradle
+└── src
+    └── main
+        └── java
+            └── ttsworker
+                ├── TTSActivities.java
+                ├── TTSActivitiesImpl.java
+                ├── TTSWorkerApp.java
+                ├── TTSWorkflow.java
+                └── TTSWorkflowImpl.java
 ```
