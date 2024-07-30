@@ -8,7 +8,7 @@ import io.temporal.worker.WorkerFactory;
 import java.util.logging.Logger;
 
 public class TTSWorkerApp {
-    public static String sharedTaskQueue = "TTS_TASK_QUEUE";
+    public static String sharedTaskQueue = "tts-task-queue";
     private static final Logger logger = Logger.getLogger(TTSWorkerApp.class.getName());
 
     public static void runWorker(String[] args) {

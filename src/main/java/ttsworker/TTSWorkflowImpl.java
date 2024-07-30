@@ -1,4 +1,4 @@
-// @@@SNIPSTART audiobook-project-java-Workflow-interface
+// @@@SNIPSTART audiobook-project-java-Workflow-implementation
 package ttspackage;
 
 import io.temporal.activity.ActivityOptions;

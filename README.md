@@ -65,9 +65,8 @@ Now that the Worker is running, you can submit jobs for text-to-speech processin
 
 ## Submit narration jobs
 
-Use the Temporal CLI tool to build audio from text files.
-
-Use the `execute` subcommand to watch the execution in real time from the command line:
+In a new terminal window, use the Temporal CLI tool to build audio from text files.
+Use the Workflow `execute` subcommand to watch the execution in real time from the command line:
 
 ```
 temporal workflow execute \
@@ -78,7 +77,7 @@ temporal workflow execute \
 ```
 
 * **type**: The name of this text-to-speech Workflow is `TTSWorkflow`.
-* **task-queue**: This Worker polls the "TTS_TASK_QUEUE" Task Queue.
+* **task-queue**: This Worker polls the "tts-task-queue" Task Queue.
 * **input**: Pass a quoted JSON string with a /path/to/your/input/text-file.
 * **workflow-id**: Set a descriptive name for your Workflow Id.
   This makes it easier to track your Workflow Execution in the Web UI.
