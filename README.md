@@ -104,7 +104,6 @@ The results path is also displayed as part of the CLI's `workflow execute` comma
 ### Cautions and notes
 
 - Do not modify your input or output files while the Workflow is running.
-  Temporal is not a cure for bad judgement.
 - The Workflow fails if you don't pass a valid text file named with a `txt` extension.
 
 ### Peeking at the process
@@ -182,16 +181,20 @@ ffmpeg -i fullbook.mp3 fullbook.m4a
 
 ```sh
 TTSWorker
+.
 ├── LICENSE
 ├── README.md
 ├── build.gradle
-└── src
-    └── main
-        └── java
-            └── ttsworker
-                ├── TTSActivities.java
-                ├── TTSActivitiesImpl.java
-                ├── TTSWorkerApp.java
-                ├── TTSWorkflow.java
-                └── TTSWorkflowImpl.java
+├── src
+│   └── main
+│       └── java
+│           └── ttsworker
+│               ├── TTSActivities.java
+│               ├── TTSActivitiesImpl.java
+│               ├── TTSWorkerApp.java
+│               ├── TTSWorkflow.java
+│               └── TTSWorkflowImpl.java
+└── text-samples
+    ├── austen.txt
+    └── doyle.txt
 ```
