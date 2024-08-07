@@ -32,10 +32,11 @@ Interrupted work can be picked up and continued without repeating steps, even if
 
 ```sh
 temporal server start-dev \
+    --ui-port 8080 \
     --db-filename /path/to/your/temporal.db
 ```
 
-Once running, connect to the [Temporal Web UI](http://localhost:8233/) and verify that the server is working.
+Once running, connect to the [Temporal Web UI](http://localhost:8080/) and verify that the server is working.
 
 
 ### Instantiate Your Bearer Token
@@ -81,8 +82,12 @@ temporal workflow execute \
 * **input**: Pass a quoted JSON string with a /path/to/your/input/text-file.
 * **workflow-id**: Set a descriptive name for your Workflow Id.
   This makes it easier to track your Workflow Execution in the Web UI.
- 
-  The identifier you set doesn't affect the input text file or the output audio file names.
+
+Please note:
+
+* The identifier you set won't affect the input text file or the output audio file names.
+* Use full paths as the Worker is not given context for relative path resolution.
+* Sample files appear in the `text-samples` folder.
 
 ### The output file
 
