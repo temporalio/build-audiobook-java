@@ -13,8 +13,9 @@ import java.util.logging.Logger;
 
 public class TTSWorkflowImpl implements TTSWorkflow {
     public TTSWorkflowImpl() { }
-
+    // In workflows users should call Workflow.getLogger() to log
     private final Logger logger = Logger.getLogger(TTSWorkflowImpl.class.getName());
+    // this doesn't need to be public?
     public String message = "Conversion request received";
 
     private ActivityOptions activityOptions = ActivityOptions.newBuilder().setScheduleToCloseTimeout(Duration.ofSeconds(120)).build();
@@ -24,6 +25,7 @@ public class TTSWorkflowImpl implements TTSWorkflow {
         return message;
     }
 
+    // Same comment I left in the Go example about not working if multiple workers are involved this sample will not work
     public String startWorkflow(String fileInputPath) {
         List<String> chunks = encodingStub.readFile(fileInputPath);
         int chunkCount = chunks.size();

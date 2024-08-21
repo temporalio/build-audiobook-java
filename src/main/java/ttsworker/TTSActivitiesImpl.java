@@ -13,7 +13,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 
 public class TTSActivitiesImpl implements TTSActivities {
+    // bearerToken should be a class variable nad not a static variable
+    // TTSActivitiesImpl can take bearerToken as a constructor argument
     public static String bearerToken = null;
+    // canonicalPath will be shared between workflows calling this activity which seems incorrect because it 
+    // is derived from the input file path. I think it should be part of the activity input and not a class variable
+    // In general it is better to avoid using mutable class variables in activity interfaces 
     Path canonicalPath = null;
 
     ApplicationFailure fail(String reason, String issue) {
