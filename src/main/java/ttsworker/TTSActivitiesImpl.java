@@ -13,8 +13,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 
 public class TTSActivitiesImpl implements TTSActivities {
-    public static String bearerToken = null;
+    private String bearerToken = null;
     Path canonicalPath = null;
+
+    TTSActivitiesImpl(String bearerToken) {
+        this.bearerToken = bearerToken;
+    }
 
     ApplicationFailure fail(String reason, String issue) {
         return ApplicationFailure.newFailure(reason, issue);

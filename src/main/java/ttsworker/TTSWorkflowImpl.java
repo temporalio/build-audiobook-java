@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 public class TTSWorkflowImpl implements TTSWorkflow {
     public TTSWorkflowImpl() { }
 
-    private final Logger logger = Logger.getLogger(TTSWorkflowImpl.class.getName());
-    public String message = "Conversion request received";
+    private static final Logger logger = Workflow.getLogger(TTSWorkflowImpl.class);
+    private String message = "Conversion request received";
 
     private ActivityOptions activityOptions = ActivityOptions.newBuilder().setScheduleToCloseTimeout(Duration.ofSeconds(120)).build();
     private TTSActivities encodingStub = Workflow.newActivityStub(TTSActivities.class, activityOptions);
