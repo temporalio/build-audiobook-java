@@ -37,7 +37,7 @@ public class TTSWorkflowImpl implements TTSWorkflow {
             logger.info(message);
             encodingStub.process(chunks.get(index), tempOutputPath);
         }
-        String outputPath = encodingStub.moveOutputFileToPlace(tempOutputPath);
+        String outputPath = encodingStub.moveOutputFileToPlace(tempOutputPath, fileInputPath);
         message = "Processing of file is done " + outputPath;
         logger.info("Output file: " + outputPath);
         return outputPath;

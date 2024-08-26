@@ -10,6 +10,6 @@ public interface TTSActivities {
     public List<String> readFile(String inputPath);
     public Path createTemporaryFile();
     public void process(String chunk, Path outputPath);
-    public String moveOutputFileToPlace(Path tempPath);
+    public String moveOutputFileToPlace(Path tempPath, String inputPath);
 }
 // @@@SNIPEND

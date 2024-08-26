@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 public class TTSActivitiesImpl implements TTSActivities {
     private String bearerToken = null;
-    Path canonicalPath = null;
 
     TTSActivitiesImpl(String bearerToken) {
         this.bearerToken = bearerToken;
@@ -26,6 +25,8 @@ public class TTSActivitiesImpl implements TTSActivities {
 
     @Override
     public List<String> readFile(String inputPath) {
+        Path canonicalPath;
+        
         try {
 
             if (inputPath == null || inputPath.isEmpty() || !inputPath.endsWith(".txt")) {
@@ -141,10 +142,13 @@ public class TTSActivitiesImpl implements TTSActivities {
     }
 
     @Override
-    public String moveOutputFileToPlace(Path tempPath) {
+    public String moveOutputFileToPlace(Path tempPath, String inputPath) {
         Path newPath = null;
         String extension = ".mp3";
         try {
+            Path canonicalPath = Paths.get(inputPath)
+                .toAbsolutePath().normalize()
+                .toRealPath(LinkOption.NOFOLLOW_LINKS);
             String baseName = FilenameUtils.getBaseName(canonicalPath.toString());
             Path parentDir = canonicalPath.getParent();
             newPath = parentDir.resolve(Paths.get(baseName + extension));
