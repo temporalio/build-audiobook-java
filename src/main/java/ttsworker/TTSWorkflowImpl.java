@@ -17,7 +17,10 @@ public class TTSWorkflowImpl implements TTSWorkflow {
     private static final Logger logger = Workflow.getLogger(TTSWorkflowImpl.class);
     private String message = "Conversion request received";
 
-    private ActivityOptions activityOptions = ActivityOptions.newBuilder().setScheduleToCloseTimeout(Duration.ofSeconds(120)).build();
+    private ActivityOptions activityOptions = ActivityOptions.newBuilder()
+        .setTaskQueue(TTSWorkerApp.sharedActivityTaskQueue)
+        .setScheduleToCloseTimeout(Duration.ofSeconds(120))
+        .build();
     private TTSActivities encodingStub = Workflow.newActivityStub(TTSActivities.class, activityOptions);
 
     public String fetchMessage() {

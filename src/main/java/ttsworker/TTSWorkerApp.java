@@ -5,10 +5,12 @@ import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
+import java.lang.management.ManagementFactory;
 import java.util.logging.Logger;
 
 public class TTSWorkerApp {
     public static String sharedTaskQueue = "tts-task-queue";
+    public static String sharedActivityTaskQueue;
     private static final Logger logger = Logger.getLogger(TTSWorkerApp.class.getName());
 
     public static void main(String[] args) {
@@ -23,9 +25,16 @@ public class TTSWorkerApp {
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
         WorkflowClient client = WorkflowClient.newInstance(service);
         WorkerFactory factory = WorkerFactory.newInstance(client);
-        Worker worker = factory.newWorker(sharedTaskQueue);
-        worker.registerWorkflowImplementationTypes(TTSWorkflowImpl.class);
-        worker.registerActivitiesImplementations(new TTSActivitiesImpl(bearerToken));
+
+        // This starter Worker will start a Workflow and create a unique Task Queue name
+        Worker starterWorker = factory.newWorker(sharedTaskQueue);
+        starterWorker.registerWorkflowImplementationTypes(TTSWorkflowImpl.class);
+        sharedActivityTaskQueue = ManagementFactory.getRuntimeMXBean().getName();
+
+        // This host-specific Worker restricts all activities to the unique
+        // host-specific Task Queue
+        Worker hostSpecificWorker = factory.newWorker(sharedActivityTaskQueue);
+        hostSpecificWorker.registerActivitiesImplementations(new TTSActivitiesImpl(bearerToken));
         factory.start();
     }
 }
