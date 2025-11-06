@@ -5,11 +5,11 @@ apply plugin: 'java'
 sourceSets.main.java.srcDirs 'src'
 
 dependencies {
-    implementation 'io.temporal:temporal-sdk:1.22.2'
-    implementation 'org.slf4j:slf4j-nop:2.0.6' // logging suppression
-    implementation 'commons-io:commons-io:2.11.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'org.json:json:20231013'
+    implementation 'io.temporal:temporal-sdk:1.31.0'
+    implementation 'org.slf4j:slf4j-nop:2.0.17' // logging suppression
+    implementation 'commons-io:commons-io:2.20.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.2.0'
+    implementation 'org.json:json:20250517'
 }
 
 // Run the App
